@@ -3,7 +3,8 @@
 ## Team Members
 
 - [Matt Rossman](team/matt-rossman.md)
-- [Ayush Khandelwal](team/AyushKhandelwal.md)
+- [Ayush Khandelwal](team/AyushKhandelwal.md) 
+- [Alexandra Ferrucc](team/ali-ferrucci.md)
 
 ## Overview
 
