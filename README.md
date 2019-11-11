@@ -4,7 +4,7 @@
 
 - [Matt Rossman](team/matt-rossman.md)
 - [Ayush Khandelwal](team/AyushKhandelwal.md) 
-- [Alexandra Ferrucc](team/ali-ferrucci.md)
+- [Alexandra Ferrucci](team/ali-ferrucci.md)
 
 ## Overview
 
