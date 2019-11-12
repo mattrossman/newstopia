@@ -5,6 +5,7 @@
 - [Matt Rossman](team/matt-rossman.md)
 - [Ayush Khandelwal](team/AyushKhandelwal.md) 
 - [Alexandra Ferrucci](team/ali-ferrucci.md)
+- [Wesley Tey](team/wtey.md)
 
 ## Overview
 
