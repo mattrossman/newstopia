@@ -1,11 +1,9 @@
-import NewsAPIClient
+from newsapi import NewsApiClient
+import json
 
-newsapi = NewsAPIClient(api_key = '5abd84eed9594c6390e96ec552d38a37')
+api = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
 
-top_headlines = newsapi.get_top_headlines(q='bitcoin',
-                                          sources='bbc-news,the-verge',
-                                          category='business',
-                                          language='en',
-                                          country='us')
+topNews = api.get_top_headlines(sources='bbc-news')
+print(json.dumps(topNews, indent=4))
 
-print(top_headlines)
+# print(json.dumps(api.get_sources(),indent = 4))    
