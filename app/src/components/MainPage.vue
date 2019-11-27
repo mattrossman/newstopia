@@ -167,11 +167,7 @@
             <v-card-title>News Sentiment</v-card-title>
             <v-card-text>
               <v-slider
-                v-model="time"
-                :max="4"
-                :tick-labels="labels"
-                class="mx-4"
-                ticks
+                v-model="volume"
                 append-icon="emoticon-outline"
                 prepend-icon="emoticon-neutral-outline"
               ></v-slider>
