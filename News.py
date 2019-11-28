@@ -19,9 +19,20 @@ for i in sources['sources']:
         
 
 whiteListKeywords = [] #user entered keywords for whitelisting
-blackListKeywords = [] #user entered keywords for whitelisting
+blackListKeywords = set() #user entered keywords for whitelisting
 
-top_headlines = api.get_top_headlines(country = 'us', category ='general') #pulls for categories selected only
+top_headlines = api.get_top_headlines(country = 'us', category ='business') #pulls for categories selected only, will change
+
+
+# breaking down into variables to make it easier to use
+for i in top_headlines['articles']:
+    title = i['title']
+    description = i['description']
+    url = i['url']
+    author = i['author']
+    content = i['content'] #only first 2 lines of article, can be used below description
+    blackListCheck(title)
+    blackListCheck(description)
 
 
 
