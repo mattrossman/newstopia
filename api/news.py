@@ -1,5 +1,6 @@
 from newsapi import NewsApiClient
 import json
+from typing import List, TypedDict
 
 api = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
 
@@ -35,7 +36,30 @@ for i in top_headlines['articles']:
     blackListCheck(description)
 
 
+class ArticleInfo(TypedDict):
+    title: str
+    description: str
+    url: str
 
+
+def fetch_filtered_articles(sentiment: float, whitelist: List[str], blacklist: List[str]) -> List[ArticleInfo]:
+    """Fetch the latest articles, filtered by sentiment and topics
+    
+    Parameters
+    ----------
+    sentiment : float
+        Minimum sentiment threshold
+    whitelist : List[str]
+        Baseline list of topics to get articles from
+    blacklist : List[str]
+        List of topics to exclude from results
+
+    Returns:
+    -------
+    List[ArticleInfo]
+        Latest articles matching the filter settings
+    """
+    ...
 
 
 
