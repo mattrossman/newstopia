@@ -3,3 +3,4 @@ newspaper3k
 newsapi-python
 indicoio
 nltk
+pyyaml

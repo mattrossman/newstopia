@@ -1,10 +1,16 @@
+from indicoio import config as indico_config
 import indicoio
 from newsapi import NewsApiClient
 from typing import List, Set, Dict, TypedDict
 from nltk.tokenize import word_tokenize
 from collections import defaultdict
+import yaml
+
 
 newsapi = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
+with open('config.yaml') as file:
+    config = yaml.full_load(file)
+    indico_config.api_key = config['keys']['indico']
 
 
 # Not using 'class' notation here due to reserved word 'id'
@@ -33,12 +39,12 @@ def fetch_top_articles() -> List[ArticleInfo]:
     return response['articles']
 
 
-def fetch_filtered_articles(sentiment: float, whitelist: Set[str], blacklist: Set[str]) -> List[ArticleInfo]:
+def fetch_filtered_articles(threshold: float, whitelist: Set[str], blacklist: Set[str]) -> List[ArticleInfo]:
     """Fetch the latest articles, filtered by sentiment and topics
 
     Parameters
     ----------
-    sentiment : float
+    threshold : float
         Minimum sentiment threshold
     whitelist : Set[str]
         Baseline list of topics to get articles from
@@ -52,6 +58,27 @@ def fetch_filtered_articles(sentiment: float, whitelist: Set[str], blacklist: Se
     """
     articles = fetch_top_articles()
     return [article for article in articles if blacklist_check_article(article, blacklist)]
+
+
+def sentiment_filter_articles(articles: List[ArticleInfo], threshold: float) -> List[ArticleInfo]:
+    """Only keep the articles that exceed the given sentiment threshold
+
+    Parameters
+    ----------
+    articles : List[ArticleInfo]
+        Articles to filter
+    threshold : float
+        Minimum sentiment threshold
+
+    Returns
+    -------
+    List[ArticleInfo]
+        Articles from the original list that exceed the given threshold
+    """
+    valid_articles = [article for article in articles if article['description'] is not None]
+    descriptions = [article['description'] for article in valid_articles]
+    sentiments = indicoio.sentiment(descriptions)
+    return [article for article, sentiment in zip(valid_articles, sentiments) if sentiment > threshold]
 
 
 def blacklist_check_article(article: ArticleInfo, blacklist: Set[str]) -> bool:
