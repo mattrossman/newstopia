@@ -7,10 +7,10 @@ from collections import defaultdict
 import yaml
 
 
-newsapi = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
 with open('config.yaml') as file:
     config = yaml.full_load(file)
     indico_config.api_key = config['keys']['indico']
+    newsapi = NewsApiClient(api_key=config['keys']['newsapi'])
 
 
 # Not using 'class' notation here due to reserved word 'id'
