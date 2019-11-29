@@ -57,7 +57,8 @@ def fetch_filtered_articles(threshold: float, whitelist: Set[str], blacklist: Se
         Latest articles matching the filter settings
     """
     articles = fetch_top_articles()
-    return [article for article in articles if blacklist_check_article(article, blacklist)]
+    articles = [article for article in articles if blacklist_check_article(article, blacklist)]
+    return sentiment_filter_articles(articles, threshold)
 
 
 def sentiment_filter_articles(articles: List[ArticleInfo], threshold: float) -> List[ArticleInfo]:
