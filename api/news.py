@@ -36,10 +36,26 @@ for i in top_headlines['articles']:
     blackListCheck(description)
 
 
+SourceInfo = TypedDict('SourceInfo', {'id': str, 'name': str})
+
 class ArticleInfo(TypedDict):
+    source: SourceInfo
+    author: str
     title: str
     description: str
     url: str
+    urlToImage: str
+    publishedAt: str
+    content: str
+
+class ResponseInfo(TypedDict):
+    status: str
+    totalResults: int
+    articles: List[ArticleInfo]
+
+
+def fetch_top_articles() -> List[ArticleInfo]:
+    ...
 
 
 def fetch_filtered_articles(sentiment: float, whitelist: List[str], blacklist: List[str]) -> List[ArticleInfo]:
@@ -59,6 +75,7 @@ def fetch_filtered_articles(sentiment: float, whitelist: List[str], blacklist: L
     List[ArticleInfo]
         Latest articles matching the filter settings
     """
+    articles = fetch_top_articles()
     ...
 
 
