@@ -1,76 +1,124 @@
+from indicoio import config as indico_config
+import indicoio
 from newsapi import NewsApiClient
-import json
-
-api = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
-
-sources = api.get_sources(language="en")
-
-categoryDict = dict() #list of sources available by category, we could have a form of an updating list which shows which sources are shown after selecting a certain category
-listOfSources = list() #list of all news sources available to choose from
-# print(sources['sources'][0]['category'])
-
-for i in sources['sources']:
-    s = str(i['name']) 
-    listOfSources.append(str(i['name']) )
-    if not categoryDict.__contains__(str(i['category'])):
-        categoryDict[str(i['category'])] = [s]
-    else:
-        categoryDict[str(i['category'])].append(s)
-        
-
-whiteListKeywords = [] #user entered keywords for whitelisting
-blackListKeywords = set() #user entered keywords for whitelisting
-
-top_headlines = api.get_top_headlines(country = 'us', category ='business') #pulls for categories selected only, will change
+from typing import List, Set, Dict, TypedDict
+from nltk.tokenize import word_tokenize
+from collections import defaultdict
+import yaml
 
 
-# breaking down into variables to make it easier to use
-for i in top_headlines['articles']:
-    title = i['title']
-    description = i['description']
-    url = i['url']
-    author = i['author']
-    content = i['content'] #only first 2 lines of article, can be used below description
-    blackListCheck(title)
-    blackListCheck(description)
+with open('config.yaml') as file:
+    config = yaml.full_load(file)
+    indico_config.api_key = config['keys']['indico']
+    newsapi = NewsApiClient(api_key=config['keys']['newsapi'])
 
 
+# Not using 'class' notation here due to reserved word 'id'
+SourceInfo = TypedDict('SourceInfo', {'id': str, 'name': str})
 
 
+class ArticleInfo(TypedDict):
+    source: SourceInfo
+    author: str
+    title: str
+    description: str
+    url: str
+    urlToImage: str
+    publishedAt: str
+    content: str
 
 
+class ResponseInfo(TypedDict):
+    status: str
+    totalResults: int
+    articles: List[ArticleInfo]
 
 
+def fetch_top_articles() -> List[ArticleInfo]:
+    response = newsapi.get_top_headlines(language='en')
+    return response['articles']
 
 
+def fetch_filtered_articles(threshold: float, whitelist: Set[str], blacklist: Set[str]) -> List[ArticleInfo]:
+    """Fetch the latest articles, filtered by sentiment and topics
+
+    Parameters
+    ----------
+    threshold : float
+        Minimum sentiment threshold
+    whitelist : Set[str]
+        Baseline list of topics to get articles from
+    blacklist : Set[str]
+        List of topics to exclude from results
+
+    Returns
+    -------
+    List[ArticleInfo]
+        Latest articles matching the filter settings
+    """
+    articles = fetch_top_articles()
+    articles = [article for article in articles if blacklist_check_article(article, blacklist)]
+    return sentiment_filter_articles(articles, threshold)
 
 
+def sentiment_filter_articles(articles: List[ArticleInfo], threshold: float) -> List[ArticleInfo]:
+    """Only keep the articles that exceed the given sentiment threshold
+
+    Parameters
+    ----------
+    articles : List[ArticleInfo]
+        Articles to filter
+    threshold : float
+        Minimum sentiment threshold
+
+    Returns
+    -------
+    List[ArticleInfo]
+        Articles from the original list that exceed the given threshold
+    """
+    valid_articles = [article for article in articles if article['description'] is not None]
+    descriptions = [article['description'] for article in valid_articles]
+    sentiments = indicoio.sentiment(descriptions)
+    return [article for article, sentiment in zip(valid_articles, sentiments) if sentiment > threshold]
 
 
+def blacklist_check_article(article: ArticleInfo, blacklist: Set[str]) -> bool:
+    """Should we keep this article given our blacklist?
+
+    Parameters
+    ----------
+    article : ArticleInfo
+        Article to be tested
+    blacklist : Set[str]
+        List of topics to exclude from results
+
+    Returns
+    -------
+    bool
+        Whether the article passes the filter
+    """
+    title, description = article['title'], article['description']
+    return not any(blacklist_check_text(text, blacklist) for text in [title, description])
 
 
-
-# topNews = api.get_top_headlines(sources='bbc-news')
-# print(json.dumps(topNews, indent=4))
-
-# print(json.dumps(api.get_sources(),indent = 4))    
-
-# sources = (api.get_sources(language="en"))
-# # print(json.dumps(sources, indent = 4))
+def blacklist_check_text(text: str, blacklist: Set[str]) -> bool:
+    """Does the provided text contain any token from the blacklist?"""
+    if text is None:
+        return False
+    tokens = word_tokenize(text.lower())
+    return any(token in blacklist for token in tokens)
 
 
-# print(sources['sources'][0]['category'])
+def sources_by_category() -> Dict[str, List[str]]:
+    """Get a mapping of recognized news API categories to sources that apply to them
 
-# a = 0
-# catergoryCount = dict()
-# categories = list()
-
-# for x in sources['sources']:
-#     categories.append(x['category'])
-#     print (x['name'] + "     Category: " + x['category'])
-#     if catergoryCount.__contains__(x['category']):
-#         catergoryCount[x['category']] = catergoryCount.get(x['category'])+1
-#     else:
-#         catergoryCount[x['category']] = 1
-
-# print(catergoryCount.keys()
+    Returns
+    -------
+    Dict[str, List[str]]
+        Mapping of category name to list of source names
+    """
+    sources = newsapi.get_sources(language="en")
+    sources_dict = defaultdict(list)
+    for source in sources['sources']:
+        sources_dict[source['category']].append(source['name'])
+    return dict(sources_dict)
