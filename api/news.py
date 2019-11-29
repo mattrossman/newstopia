@@ -1,5 +1,5 @@
 from newsapi import NewsApiClient
-from typing import List, TypedDict
+from typing import List, Set, TypedDict
 from nltk.tokenize import word_tokenize
 
 api = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
@@ -51,10 +51,11 @@ class ResponseInfo(TypedDict):
 
 def fetch_top_articles() -> List[ArticleInfo]:
     newsapi = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
-    return newsapi.get_top_headlines(language='en')
+    response = newsapi.get_top_headlines(language='en')
+    return response['articles']
 
 
-def filter_article(article: ArticleInfo, sentiment: float, whitelist: List[str], blacklist: List[str]) -> bool:
+def filter_article(article: ArticleInfo, sentiment: float, whitelist: Set[str], blacklist: Set[str]) -> bool:
     """Condition
 
     Parameters
@@ -63,9 +64,9 @@ def filter_article(article: ArticleInfo, sentiment: float, whitelist: List[str],
         Article to be tested
     sentiment : float
         Minimum sentiment threshold
-    whitelist : List[str]
+    whitelist : Set[str]
         Baseline list of topics to get articles from
-    blacklist : List[str]
+    blacklist : Set[str]
         List of topics to exclude from results
 
     Returns
@@ -73,19 +74,20 @@ def filter_article(article: ArticleInfo, sentiment: float, whitelist: List[str],
     bool
         Whether the article passes the filter
     """
-    ...
+    title, description = article['title'], article['description']
+    return not any(blacklist_check(text, blacklist) for text in [title, description])
 
 
-def fetch_filtered_articles(sentiment: float, whitelist: List[str], blacklist: List[str]) -> List[ArticleInfo]:
+def fetch_filtered_articles(sentiment: float, whitelist: Set[str], blacklist: Set[str]) -> List[ArticleInfo]:
     """Fetch the latest articles, filtered by sentiment and topics
 
     Parameters
     ----------
     sentiment : float
         Minimum sentiment threshold
-    whitelist : List[str]
+    whitelist : Set[str]
         Baseline list of topics to get articles from
-    blacklist : List[str]
+    blacklist : Set[str]
         List of topics to exclude from results
 
     Returns
@@ -94,33 +96,32 @@ def fetch_filtered_articles(sentiment: float, whitelist: List[str], blacklist: L
         Latest articles matching the filter settings
     """
     articles = fetch_top_articles()
-    return articles
+    return [article for article in articles if filter_article(article, sentiment, whitelist, blacklist)]
 
 
-def blackListCheck(s):
-    words = s.split(' ')
-    for i in words:
-        if blackListKeywords.__contains__(i):
-            return False
+def blacklist_check(text: str, blacklist: Set[str]) -> bool:
+    """Does the provided text contain any token from the blacklist?"""
+    if text is None:
+        return False
+    tokens = word_tokenize(text.lower())
+    return any(token in blacklist for token in tokens)
 
-    return True
 
-
-for i in top_headlines['articles']:
-    if i['title'] == None or i['description'] == None or i['url'] == None or i['urlToImage'] == None or i['author'] ==None or i['content'] == None:
-        continue
-
-    title = i['title']
-    description = i['description']
-    url = str(i['url'])
-    imageUrl = str(i['urlToImage'])
-    author = str(i['author'])
-    content = i['content'] #only first 2 lines of article, can be used below description
-
-    if not (blackListCheck(title) == True and blackListCheck(description) == True) :
-        continue
-    filteredArticles[articleId] = [title, description, author, content, url, imageUrl]
-    articleId += 1
+# for i in top_headlines['articles']:
+#     if i['title'] == None or i['description'] == None or i['url'] == None or i['urlToImage'] == None or i['author'] ==None or i['content'] == None:
+#         continue
+#
+#     title = i['title']
+#     description = i['description']
+#     url = str(i['url'])
+#     imageUrl = str(i['urlToImage'])
+#     author = str(i['author'])
+#     content = i['content'] #only first 2 lines of article, can be used below description
+#
+#     if not (blackListCheck(title) == True and blackListCheck(description) == True) :
+#         continue
+#     filteredArticles[articleId] = [title, description, author, content, url, imageUrl]
+#     articleId += 1
 
 # topNews = api.get_top_headlines(sources='bbc-news')
 # print(json.dumps(topNews, indent=4))
