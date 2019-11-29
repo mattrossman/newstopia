@@ -1,7 +1,6 @@
 from newsapi import NewsApiClient
 import json
 
-
 api = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
 
 sources = api.get_sources(language="en")
@@ -29,7 +28,7 @@ filteredArticles = dict() #key - article id , value - [title, description, autho
 articleId = 0
 
     
-def blackListCheck(s):
+def blackListCheck(s): 
     words = s.split(' ')
     for i in words: 
         if blackListKeywords.__contains__(i):
