@@ -1,3 +1,4 @@
+import indicoio
 from newsapi import NewsApiClient
 from typing import List, Set, Dict, TypedDict
 from nltk.tokenize import word_tokenize
@@ -32,29 +33,6 @@ def fetch_top_articles() -> List[ArticleInfo]:
     return response['articles']
 
 
-def filter_article(article: ArticleInfo, sentiment: float, whitelist: Set[str], blacklist: Set[str]) -> bool:
-    """Condition
-
-    Parameters
-    ----------
-    article : ArticleInfo
-        Article to be tested
-    sentiment : float
-        Minimum sentiment threshold
-    whitelist : Set[str]
-        Baseline list of topics to get articles from
-    blacklist : Set[str]
-        List of topics to exclude from results
-
-    Returns
-    -------
-    bool
-        Whether the article passes the filter
-    """
-    title, description = article['title'], article['description']
-    return not any(blacklist_check(text, blacklist) for text in [title, description])
-
-
 def fetch_filtered_articles(sentiment: float, whitelist: Set[str], blacklist: Set[str]) -> List[ArticleInfo]:
     """Fetch the latest articles, filtered by sentiment and topics
 
@@ -73,10 +51,29 @@ def fetch_filtered_articles(sentiment: float, whitelist: Set[str], blacklist: Se
         Latest articles matching the filter settings
     """
     articles = fetch_top_articles()
-    return [article for article in articles if filter_article(article, sentiment, whitelist, blacklist)]
+    return [article for article in articles if blacklist_check_article(article, blacklist)]
 
 
-def blacklist_check(text: str, blacklist: Set[str]) -> bool:
+def blacklist_check_article(article: ArticleInfo, blacklist: Set[str]) -> bool:
+    """Should we keep this article given our blacklist?
+
+    Parameters
+    ----------
+    article : ArticleInfo
+        Article to be tested
+    blacklist : Set[str]
+        List of topics to exclude from results
+
+    Returns
+    -------
+    bool
+        Whether the article passes the filter
+    """
+    title, description = article['title'], article['description']
+    return not any(blacklist_check_text(text, blacklist) for text in [title, description])
+
+
+def blacklist_check_text(text: str, blacklist: Set[str]) -> bool:
     """Does the provided text contain any token from the blacklist?"""
     if text is None:
         return False
