@@ -1,5 +1,6 @@
 from newsapi import NewsApiClient
 from typing import List, TypedDict
+from nltk.tokenize import word_tokenize
 
 api = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
 
@@ -49,6 +50,29 @@ class ResponseInfo(TypedDict):
 
 
 def fetch_top_articles() -> List[ArticleInfo]:
+    newsapi = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
+    return newsapi.get_top_headlines(language='en')
+
+
+def filter_article(article: ArticleInfo, sentiment: float, whitelist: List[str], blacklist: List[str]) -> bool:
+    """Condition
+
+    Parameters
+    ----------
+    article : ArticleInfo
+        Article to be tested
+    sentiment : float
+        Minimum sentiment threshold
+    whitelist : List[str]
+        Baseline list of topics to get articles from
+    blacklist : List[str]
+        List of topics to exclude from results
+
+    Returns
+    -------
+    bool
+        Whether the article passes the filter
+    """
     ...
 
 
@@ -64,13 +88,13 @@ def fetch_filtered_articles(sentiment: float, whitelist: List[str], blacklist: L
     blacklist : List[str]
         List of topics to exclude from results
 
-    Returns:
+    Returns
     -------
     List[ArticleInfo]
         Latest articles matching the filter settings
     """
     articles = fetch_top_articles()
-    return ...
+    return articles
 
 
 def blackListCheck(s):
