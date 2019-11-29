@@ -86,8 +86,8 @@ for i in top_headlines['articles']:
     if i['title'] == None or i['description'] == None or i['url'] == None or i['urlToImage'] == None or i['author'] ==None or i['content'] == None:
         continue
 
-    title = i['title'].encode('utf-8')
-    description = i['description'].encode('utf-8')
+    title = i['title']
+    description = i['description']
     url = str(i['url'])
     imageUrl = str(i['urlToImage'])
     author = str(i['author'])
