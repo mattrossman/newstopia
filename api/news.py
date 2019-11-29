@@ -57,7 +57,7 @@ def fetch_filtered_articles(threshold: float, whitelist: Set[str], blacklist: Se
         Latest articles matching the filter settings
     """
     articles = fetch_top_articles()
-    articles = [article for article in articles if blacklist_check_article(article, blacklist)]
+    articles = [article for article in articles if not blacklist_check_article(article, blacklist)]
     return sentiment_filter_articles(articles, threshold)
 
 
@@ -83,7 +83,7 @@ def sentiment_filter_articles(articles: List[ArticleInfo], threshold: float) -> 
 
 
 def blacklist_check_article(article: ArticleInfo, blacklist: Set[str]) -> bool:
-    """Should we keep this article given our blacklist?
+    """Does the article contain any token from our blacklist?
 
     Parameters
     ----------
@@ -98,7 +98,7 @@ def blacklist_check_article(article: ArticleInfo, blacklist: Set[str]) -> bool:
         Whether the article passes the filter
     """
     title, description = article['title'], article['description']
-    return not any(blacklist_check_text(text, blacklist) for text in [title, description])
+    return any(blacklist_check_text(text, blacklist) for text in [title, description])
 
 
 def blacklist_check_text(text: str, blacklist: Set[str]) -> bool:
