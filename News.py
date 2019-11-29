@@ -1,6 +1,7 @@
 from newsapi import NewsApiClient
 import json
 
+
 api = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
 
 sources = api.get_sources(language="en")
