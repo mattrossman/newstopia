@@ -1,32 +1,10 @@
 from newsapi import NewsApiClient
-from typing import List, Set, TypedDict
+from typing import List, Set, Dict, TypedDict
 from nltk.tokenize import word_tokenize
+from collections import defaultdict
 
-api = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
+newsapi = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
 
-sources = api.get_sources(language="en")
-
-categoryDict = dict()  # list of sources available by category, we could have a form of an updating list which shows which sources are shown after selecting a certain category
-listOfSources = list()  # list of all news sources available to choose from
-# print(sources['sources'][0]['category'])
-
-for i in sources['sources']:
-    s = str(i['name'])
-    listOfSources.append(str(i['name']))
-    if not categoryDict.__contains__(str(i['category'])):
-        categoryDict[str(i['category'])] = [s]
-    else:
-        categoryDict[str(i['category'])].append(s)
-
-whiteListKeywords = []  # user entered keywords for whitelisting
-blackListKeywords = set()  # user entered keywords for whitelisting
-
-top_headlines = api.get_top_headlines(country='us',
-                                      category='business')  # pulls for categories selected only, will change
-
-filteredArticles = dict()  # key - article id , value - [title, description, author, content, url, imageUrl]
-# breaking down into variables to make it easier to use
-articleId = 0
 
 # Not using 'class' notation here due to reserved word 'id'
 SourceInfo = TypedDict('SourceInfo', {'id': str, 'name': str})
@@ -50,7 +28,6 @@ class ResponseInfo(TypedDict):
 
 
 def fetch_top_articles() -> List[ArticleInfo]:
-    newsapi = NewsApiClient(api_key='5abd84eed9594c6390e96ec552d38a37')
     response = newsapi.get_top_headlines(language='en')
     return response['articles']
 
@@ -107,43 +84,16 @@ def blacklist_check(text: str, blacklist: Set[str]) -> bool:
     return any(token in blacklist for token in tokens)
 
 
-# for i in top_headlines['articles']:
-#     if i['title'] == None or i['description'] == None or i['url'] == None or i['urlToImage'] == None or i['author'] ==None or i['content'] == None:
-#         continue
-#
-#     title = i['title']
-#     description = i['description']
-#     url = str(i['url'])
-#     imageUrl = str(i['urlToImage'])
-#     author = str(i['author'])
-#     content = i['content'] #only first 2 lines of article, can be used below description
-#
-#     if not (blackListCheck(title) == True and blackListCheck(description) == True) :
-#         continue
-#     filteredArticles[articleId] = [title, description, author, content, url, imageUrl]
-#     articleId += 1
+def sources_by_category() -> Dict[str, List[str]]:
+    """Get a mapping of recognized news API categories to sources that apply to them
 
-# topNews = api.get_top_headlines(sources='bbc-news')
-# print(json.dumps(topNews, indent=4))
-
-# print(json.dumps(api.get_sources(),indent = 4))    
-
-# sources = (api.get_sources(language="en"))
-# # print(json.dumps(sources, indent = 4))
-
-
-# print(sources['sources'][0]['category'])
-
-# a = 0
-# catergoryCount = dict()
-# categories = list()
-
-# for x in sources['sources']:
-#     categories.append(x['category'])
-#     print (x['name'] + "     Category: " + x['category'])
-#     if catergoryCount.__contains__(x['category']):
-#         catergoryCount[x['category']] = catergoryCount.get(x['category'])+1
-#     else:
-#         catergoryCount[x['category']] = 1
-
-# print(catergoryCount.keys()
+    Returns
+    -------
+    Dict[str, List[str]]
+        Mapping of category name to list of source names
+    """
+    sources = newsapi.get_sources(language="en")
+    sources_dict = defaultdict(list)
+    for source in sources['sources']:
+        sources_dict[source['category']].append(source['name'])
+    return dict(sources_dict)
