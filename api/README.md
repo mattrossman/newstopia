@@ -1,6 +1,14 @@
-# Backend
+# API
 
-## API Keys
+## Setup
+
+Make a virtual environment based on **Python 3.8** (for TypedDict support).
+
+With it activated:
+
+    pip install -r requirements.txt
+
+### API Keys
 
 You must add a `config.yaml` to this folder containing your API keys for News API and Indico.
 
