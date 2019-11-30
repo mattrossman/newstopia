@@ -1,4 +1,4 @@
-# CS 323 Group 12
+# CS 326 Group 12
 
 ## Team Members
 
