@@ -1,4 +1,5 @@
 Flask
+flask-cors
 newspaper3k
 newsapi-python
 indicoio
