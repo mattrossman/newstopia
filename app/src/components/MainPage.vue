@@ -1,25 +1,18 @@
 <template>
   <v-card>
    <v-container fluid>
-     <p>{{ info }}</p>
      <h4>Top News</h4>
        <v-row>
         <v-col cols="8">
           <v-card>
-            <v-card-title>
-              <a href="https://www.npr.org/2019/11/27/783236569/bomb-cyclone-whips-through-the-west-as-winter-storms-snarl-thanksgiving-travel"
-              target="_blank">
-                'Bomb Cyclone' Whips Though The West As Winter Storm Snarl Thanksgiving Travel
-              </a>
-            </v-card-title>
-            <v-card-subtitle>NPR * 2 hours ago</v-card-subtitle>
             <v-card-text>
               <ul>
-                <li>
-                  <a href="https://www.cnn.com/2019/11/26/weather/denver-airport-thanksgiving-travel-trnd/index.html">
-                    Storm leaves over 1,100 stranded on Denver International Airport
+                <li v-for="article in articles" v-bind:key="article">
+                  <a :href="article.url">
+                    {{ article.title }}
                   </a>
-                  <p>CNN * Yesterday</p>
+                  <p>{{ article.description }}
+                  <p>{{ article.source.name }}</p>
                 </li>
                 <li>
                   <a href="https://www.wmtw.com/article/maine-rain-snow-to-impact-thanksgiving-week-travel-update2/29958760">
@@ -35,70 +28,6 @@
                 </li>
               </ul>
             </v-card-text>
-            <v-card-actions>
-              <v-btn
-                text
-                color="deep-purple accent-4"
-              >
-                Learn More
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-
-          <v-card>
-            <v-card-title>
-              <a href="https://techcrunch.com/2019/11/27/alexa-is-about-to-be-very-disappointed/"
-              target="_blank">
-                Alexa is about to be very disappointed
-              </a>
-            </v-card-title>
-            <v-card-subtitle>Tech Crunch * 1 hour ago</v-card-subtitle>
-            <v-card-text>
-              <ul>
-                <li>
-                  <a href="https://gizmodo.com/amazon-quietly-reveals-plan-to-put-alexa-in-almost-ever-1840046869">
-                    Amazon Quietly Reveals Plan to Put Alexa in Almost Everything
-                  </a>
-                  <p>Gizmodo * Yesterday </p>
-                </li>
-              </ul>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                text
-                color="deep-purple accent-4"
-              >
-                Learn More
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-
-          <v-card>
-            <v-card-title>
-              <a href="https://www.cnn.com/2019/11/27/business/manchester-city-silver-lake/index.html"
-              target="_blank">
-                Star Wars script wound up on eBay after John Boyega partied and forgot about it
-              </a>
-            </v-card-title>
-            <v-card-subtitle>CNN * 4 hours ago</v-card-subtitle>
-            <v-card-text>
-              <ul>
-                <li>
-                  <a href="https://io9.gizmodo.com/who-had-bets-on-john-boyega-leaking-the-rise-of-skywalk-1840066358">
-                    Star Wars Rise of Skywalker Script Leak: It Was John Boyega
-                  </a>
-                  <p>Gizmodo * 1 hour ago</p>
-                </li>
-              </ul>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                text
-                color="deep-purple accent-4"
-              >
-                Learn More
-              </v-btn>
-            </v-card-actions>
           </v-card>
         </v-col>
 
@@ -195,7 +124,7 @@ export default {
         { day: 'Thursday', icon: 'mdi-cloud', temp: '25\xB0/15\xB0' },
       ],
       lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`,
-      info: null
+      articles: null
   }),
   mounted () {
     axios
@@ -204,7 +133,7 @@ export default {
         whitelist: [],
         blacklist: []
       })
-      .then(response => (this.info = response))
+      .then(response => (this.articles = response.data.articles))
   }
 };
 </script>
