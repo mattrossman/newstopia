@@ -8,23 +8,14 @@
             <v-card-text>
               <ul>
                 <li v-for="article in articles" v-bind:key="article">
-                  <a :href="article.url">
-                    {{ article.title }}
-                  </a>
-                  <p>{{ article.description }}
-                  <p>{{ article.source.name }}</p>
-                </li>
-                <li>
-                  <a href="https://www.wmtw.com/article/maine-rain-snow-to-impact-thanksgiving-week-travel-update2/29958760">
-                    Impact Weather: Many Mainers to wake up to a white Thanksgiving
-                  </a>
-                  <p>WMTW Portland * 2 hours ago</p>
-                </li>
-                <li>
-                  <a href="https://www.bloomberg.com/news/articles/2019-11-26/snow-snarls-thanksgiving-travel-with-flights-canceled-in-denver">
-                    Weather Thanksgiving 2019: Snow Snarls Travel, Cancels Fights
-                  </a>
-                  <p>Bloomberg * Yesterday</p>
+                  <div class="details">
+                    <a :href="article.url">
+                      {{ article.title }}
+                    </a>
+                    <p>{{ article.description }}
+                    <p>{{ article.source.name }}</p>
+                  </div>
+                  <!-- <img :src="article.urlToImage" class="thumb"> -->
                 </li>
               </ul>
             </v-card-text>
@@ -110,6 +101,18 @@
     </v-container>
   </v-card>
 </template>
+<style scoped>
+/* ul {
+  list-style-type: none;
+}
+img.thumb {
+  width: 100px;
+}
+div.details {
+  float: right;
+  width: auto;
+} */
+</style>
 <script>
 import axios from 'axios'
 export default {
