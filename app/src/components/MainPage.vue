@@ -1,6 +1,7 @@
 <template>
   <v-card>
    <v-container fluid>
+     <p>{{ info }}</p>
      <h4>Top News</h4>
        <v-row>
         <v-col cols="8">
@@ -181,6 +182,7 @@
   </v-card>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: 'MainPage',
 
@@ -192,7 +194,17 @@ export default {
         { day: 'Wednesday', icon: 'mdi-white-balance-sunny', temp: '22\xB0/14\xB0' },
         { day: 'Thursday', icon: 'mdi-cloud', temp: '25\xB0/15\xB0' },
       ],
-      lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`
+      lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`,
+      info: null
   }),
+  mounted () {
+    axios
+      .post('http://127.0.0.1:5000/articles', {
+        threshold: 0,
+        whitelist: [],
+        blacklist: []
+      })
+      .then(response => (this.info = response))
+  }
 };
 </script>
