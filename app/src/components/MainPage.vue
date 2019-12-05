@@ -141,7 +141,7 @@ export default {
     }
   },
   mounted () {
-    this.getArticles(0, [], []);
+    this.getArticles(0, ['president'], ['trump']);
   }
 };
 </script>

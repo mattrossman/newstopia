@@ -39,6 +39,16 @@ def fetch_top_articles() -> List[ArticleInfo]:
     return response['articles']
 
 
+def make_keyword_query(whitelist: Set[str], blacklist: Set[str]) -> str:
+    return f'{" ".join(whitelist)} {" ".join("-" + token for token in blacklist)}'
+
+
+def fetch_keyword_articles(whitelist: Set[str], blacklist: Set[str]) -> List[ArticleInfo]:
+    """Get articles that match the whitelist and don't match the blacklist"""
+    response = newsapi.get_everything(q=make_keyword_query(whitelist, blacklist), language='en')
+    return response['articles']
+
+
 def fetch_filtered_articles(threshold: float, whitelist: Set[str], blacklist: Set[str]) -> List[ArticleInfo]:
     """Fetch the latest articles, filtered by sentiment and topics
 
@@ -56,7 +66,8 @@ def fetch_filtered_articles(threshold: float, whitelist: Set[str], blacklist: Se
     List[ArticleInfo]
         Latest articles matching the filter settings
     """
-    articles = fetch_top_articles()
+    articles = fetch_keyword_articles(whitelist, blacklist)
+    # Do one more blacklisting pass (News API seems to let some slip through)
     articles = [article for article in articles if not blacklist_check_article(article, blacklist)]
     return sentiment_filter_articles(articles, threshold)
 
