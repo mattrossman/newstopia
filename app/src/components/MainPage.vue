@@ -129,14 +129,19 @@ export default {
       lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`,
       articles: null
   }),
+  methods: {
+    getArticles: function (threshold, whitelist, blacklist) {
+      axios
+        .post('http://127.0.0.1:5000/articles', {
+          threshold: threshold,
+          whitelist: whitelist,
+          blacklist: blacklist
+        })
+        .then(response => (this.articles = response.data.articles))
+    }
+  },
   mounted () {
-    axios
-      .post('http://127.0.0.1:5000/articles', {
-        threshold: 0,
-        whitelist: [],
-        blacklist: []
-      })
-      .then(response => (this.articles = response.data.articles))
+    this.getArticles(0, [], []);
   }
 };
 </script>
