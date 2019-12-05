@@ -22,15 +22,8 @@ keys:
 
 ## Running
 
-#### (Optional) Enable debug mode
+#### (Debug) Helper Script
 
 ```console
-foo@bar:~$ export FLASK_ENV=development
-```
-
-#### Start the Flask server
-
-```console
-foo@bar:~$ export FLASK_APP=api.py
-foo@bar:~$ python -m flask run
+foo@bar:~$ ./debug.sh
 ```
