@@ -12,10 +12,6 @@
 
       <v-spacer></v-spacer>
 
-      <v-avatar color="red">
-        <span class="white--text headline">CJ</span>
-      </v-avatar>
-
     </v-app-bar>
 
     <v-content>
