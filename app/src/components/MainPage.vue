@@ -23,6 +23,19 @@
         </v-col>
 
         <v-col cols="4">
+
+          <v-card>
+            <v-card-title>News Sentiment</v-card-title>
+            <v-card-text>
+              <v-slider
+                v-model="volume"
+                append-icon="emoticon-outline"
+                prepend-icon="emoticon-neutral-outline"
+              ></v-slider>
+              <v-btn small v-on:click="updateHandler">Update</v-btn>
+            </v-card-text>
+          </v-card>
+
           <v-card>
             <v-list-item two-line>
               <v-list-item-content>
@@ -84,18 +97,6 @@
             </v-card-actions>
           </v-card>
 
-          <v-card>
-            <v-card-title>News Sentiment</v-card-title>
-            <v-card-text>
-              <v-slider
-                v-model="volume"
-                append-icon="emoticon-outline"
-                prepend-icon="emoticon-neutral-outline"
-              ></v-slider>
-
-            </v-card-text>
-          </v-card>
-
         </v-col>
       </v-row>
     </v-container>
@@ -138,6 +139,10 @@ export default {
           blacklist: blacklist
         })
         .then(response => (this.articles = response.data.articles))
+    },
+    updateHandler: function(event) {
+      this.getArticles(0, ['mcdonalds'], []);
+      window.console.log(`Button clicked: ${event.target.name}`)
     }
   },
   mounted () {
