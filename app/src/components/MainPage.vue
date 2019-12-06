@@ -28,9 +28,10 @@
             <v-card-title>News Sentiment</v-card-title>
             <v-card-text>
               <v-slider
-                v-model="volume"
+                v-model="sentiment"
                 append-icon="emoticon-outline"
                 prepend-icon="emoticon-neutral-outline"
+                min=0 max=1 step=0.1
               ></v-slider>
               <v-btn small v-on:click="updateHandler">Update</v-btn>
             </v-card-text>
@@ -128,7 +129,8 @@ export default {
         { day: 'Thursday', icon: 'mdi-cloud', temp: '25\xB0/15\xB0' },
       ],
       lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`,
-      articles: null
+      articles: null,
+      sentiment: null
   }),
   methods: {
     getArticles: function (threshold, whitelist, blacklist) {
@@ -141,8 +143,9 @@ export default {
         .then(response => (this.articles = response.data.articles))
     },
     updateHandler: function(event) {
-      this.getArticles(0, ['mcdonalds'], []);
+      this.getArticles(this.sentiment, ['mcdonalds'], []);
       window.console.log(`Button clicked: ${event.target.name}`)
+      window.console.log(`Sentiment value: ${this.sentiment}`)
     }
   },
   mounted () {
