@@ -33,6 +33,28 @@
                 prepend-icon="emoticon-neutral-outline"
                 min=0 max=1 step=0.1
               ></v-slider>
+              <v-combobox multiple
+                        v-model="whitelist" 
+                        label="Whitelist" 
+                        append-icon
+                        chips
+                        deletable-chips
+                        class="tag-input"
+                        :search-input.sync="search" 
+                        @keyup.tab="updateTags"
+                        @paste="updateTags">
+              </v-combobox>
+              <v-combobox multiple
+                        v-model="blacklist" 
+                        label="Blacklist" 
+                        append-icon
+                        chips
+                        deletable-chips
+                        class="tag-input"
+                        :search-input.sync="search" 
+                        @keyup.tab="updateTags"
+                        @paste="updateTags">
+              </v-combobox>
               <v-btn small v-on:click="updateHandler">Update</v-btn>
             </v-card-text>
           </v-card>
@@ -74,23 +96,6 @@
               <v-list-item-subtitle>48%</v-list-item-subtitle>
             </v-list-item>
 
-            <v-list class="transparent">
-              <v-list-item
-                v-for="item in forecast"
-                :key="item.day"
-              >
-                <v-list-item-title>{{ item.day }}</v-list-item-title>
-
-                <v-list-item-icon>
-                  <v-icon>{{ item.icon }}</v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-subtitle class="text-right">
-                  {{ item.temp }}
-                </v-list-item-subtitle>
-              </v-list-item>
-            </v-list>
-
             <v-divider></v-divider>
 
             <v-card-actions>
@@ -130,7 +135,9 @@ export default {
       ],
       lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`,
       articles: null,
-      sentiment: null
+      sentiment: null,
+      whitelist: null,
+      blacklist: null,
   }),
   methods: {
     getArticles: function (threshold, whitelist, blacklist) {
@@ -143,9 +150,10 @@ export default {
         .then(response => (this.articles = response.data.articles))
     },
     updateHandler: function(event) {
-      this.getArticles(this.sentiment, ['mcdonalds'], []);
+      this.getArticles(this.sentiment, this.whitelist, this.blacklist);
       window.console.log(`Button clicked: ${event.target.name}`)
       window.console.log(`Sentiment value: ${this.sentiment}`)
+      window.console.log(`Whitelist: ${this.whitelist}`)
     }
   },
   mounted () {
