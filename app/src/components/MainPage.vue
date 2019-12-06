@@ -29,8 +29,8 @@
             <v-card-text>
               <v-slider
                 v-model="sentiment"
-                append-icon="emoticon-outline"
-                prepend-icon="emoticon-neutral-outline"
+                append-icon="mdi-emoticon-outline"
+                prepend-icon="mdi-emoticon-neutral-outline"
                 min=0 max=1 step=0.1
               ></v-slider>
               <v-combobox multiple
@@ -126,14 +126,7 @@ export default {
   name: 'MainPage',
 
   data: () => ({
-      labels: ['SU', 'MO', 'TU', 'WED', 'TH', 'FR', 'SA'],
-      time: 0,
-      forecast: [
-        { day: 'Tuesday', icon: 'mdi-white-balance-sunny', temp: '24\xB0/12\xB0' },
-        { day: 'Wednesday', icon: 'mdi-white-balance-sunny', temp: '22\xB0/14\xB0' },
-        { day: 'Thursday', icon: 'mdi-cloud', temp: '25\xB0/15\xB0' },
-      ],
-      lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`,
+      
       articles: null,
       sentiment: null,
       whitelist: null,
