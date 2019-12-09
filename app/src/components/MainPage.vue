@@ -25,6 +25,7 @@
                     :href="article.url"
                     target="_blank"
                   >
+                    <!-- :style="{backgroundColor: getColorForPercentage(article.sentiment)}" -->
                     <v-list-item-avatar>
                       <v-img :src="article.urlToImage"></v-img>
                     </v-list-item-avatar>
@@ -37,7 +38,17 @@
                       </v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-icon>
-                      <p>{{ Math.round((article.sentiment * 100)) }}%</p>
+                      <p :style="{
+                        backgroundColor: getColorForPercentage(article.sentiment),
+                        padding: '10px',
+                        'border-radius': '50%',
+                        width: '50px',
+                        height: '50px',
+                        'line-height': '30px',
+                        'text-align': 'center',
+                        }">
+                        {{ Math.round((article.sentiment * 100)) }}%
+                      </p>
                     </v-list-item-icon>
                   </v-list-item>
                 </template>
@@ -155,38 +166,11 @@ export default {
       sentiment: null,
       whitelist: null,
       blacklist: null,
-      items: [
-        { header: 'Today' },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          title: 'Brunch this weekend?',
-          subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-          subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.",
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          title: 'Oui oui',
-          subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?",
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-          title: 'Birthday gift',
-          subtitle: "<span class='text--primary'>Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?",
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          title: 'Recipe to try',
-          subtitle: "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
-        },
-      ],
+      percentColors: [
+        { pct: 0.0, color: { r: 0xff, g: 0xda, b: 0xd1 } },
+        { pct: 0.5, color: { r: 0xff, g: 0xfe, b: 0xd1 } },
+        { pct: 1.0, color: { r: 0x94, g: 0xd4, b: 0xa5 } }
+      ]
   }),
   methods: {
     getArticles: function (threshold, whitelist, blacklist) {
@@ -203,7 +187,27 @@ export default {
       window.console.log(`Button clicked: ${event.target.name}`)
       window.console.log(`Sentiment value: ${this.sentiment}`)
       window.console.log(`Whitelist: ${this.whitelist}`)
+    },
+    getColorForPercentage: function(pct) {
+    for (var i = 1; i < this.percentColors.length - 1; i++) {
+        if (pct < this.percentColors[i].pct) {
+            break;
+        }
     }
+    var lower = this.percentColors[i - 1];
+    var upper = this.percentColors[i];
+    var range = upper.pct - lower.pct;
+    var rangePct = (pct - lower.pct) / range;
+    var pctLower = 1 - rangePct;
+    var pctUpper = rangePct;
+    var color = {
+        r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
+        g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
+        b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
+    };
+    return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
+    // or output as hex if preferred
+}
   },
   mounted () {
     this.getArticles(null, null, null);
