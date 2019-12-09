@@ -1,6 +1,8 @@
+
 <template>
   <v-card>
    <v-container fluid>
+     <div class="circular" v-bind:style="{ backgroundImage: 'url(' + background + ')' }">app</div>
      <h4>Top News</h4>
        <v-row>
         <v-col cols="8">
@@ -26,20 +28,21 @@
           <v-card>
             <v-list-item two-line>
               <v-list-item-content>
-                <v-list-item-title class="headline">San Francisco</v-list-item-title>
-                <v-list-item-subtitle>Mon, 12:30 PM, Mostly sunny</v-list-item-subtitle>
+                <v-list-item-title class="headline">Amherst, MA</v-list-item-title>
+                <v-list-item-subtitle>Tue, 2:15 PM, {{ output.currently.summary}}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
             <v-card-text>
               <v-row align="center">
                 <v-col class="display-3" cols="6">
-                  23&deg;C
+    
+                  {{ Math.round(output.currently.temperature) }}&deg;F
                 </v-col>
                 <v-col cols="6">
                   <v-img
-                    src="https://cdn.vuetifyjs.com/images/cards/sun.png"
-                    alt="Sunny image"
+                    src="/Users/ayushkhd/Documents/326-group-12/app/weather-pouring (3).png"
+                    alt="Rainy image"
                     width="92"
                   ></v-img>
                 </v-col>
@@ -114,6 +117,7 @@ div.details {
 } */
 </style>
 <script>
+// import  mdiWeatherWindy from '@mdi/js';
 import axios from 'axios'
 export default {
   name: 'MainPage',
@@ -127,7 +131,8 @@ export default {
         { day: 'Thursday', icon: 'mdi-cloud', temp: '25\xB0/15\xB0' },
       ],
       lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`,
-      articles: null
+      articles: null,
+      output: null
   }),
   methods: {
     getArticles: function (threshold, whitelist, blacklist) {
@@ -138,10 +143,20 @@ export default {
           blacklist: blacklist
         })
         .then(response => (this.articles = response.data.articles))
-    }
+    },
+    // getWeather: function(){ 
+    //   axios.get('https://api.darksky.net/forecast/5871dcff4e6467cfe993c8b6c5bcf9f6/42.3868,-72.5301')
+    //     .then((response) => {
+    //       this.output = response;
+    //       // console.log(response.statusText);
+    //       // console.log(response.config);
+    //     }) }
   },
   mounted () {
     this.getArticles(0, [], []);
+    axios
+      .get('https://api.darksky.net/forecast/5871dcff4e6467cfe993c8b6c5bcf9f6/42.3868,-72.5301') 
+      .then(response => (this.output = response.data))
   }
 };
 </script>
