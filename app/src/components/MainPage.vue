@@ -62,15 +62,15 @@
           <v-card>
             <v-list-item two-line>
               <v-list-item-content>
-                <v-list-item-title class="headline">San Francisco</v-list-item-title>
-                <v-list-item-subtitle>Mon, 12:30 PM, Mostly sunny</v-list-item-subtitle>
+                <v-list-item-title class="headline">Amherst, MA</v-list-item-title>
+                <v-list-item-subtitle>{{output.currently.summary}}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
             <v-card-text>
               <v-row align="center">
                 <v-col class="display-3" cols="6">
-                  23&deg;C
+                  {{Math.round(output.currently.temperature)}}&deg;F
                 </v-col>
                 <v-col cols="6">
                   <v-img
@@ -84,17 +84,18 @@
 
             <v-list-item>
               <v-list-item-icon>
-                <v-icon>mdi-send</v-icon>
+                <v-icon>mdi-weather-windy</v-icon>
               </v-list-item-icon>
-              <v-list-item-subtitle>23 km/h</v-list-item-subtitle>
+              <v-list-item-subtitle>{{Math.round(output.currently.windSpeed)}} mph</v-list-item-subtitle>
+               <v-list-item-icon>
+                <v-icon>mdi-weather-pouring</v-icon>
+              </v-list-item-icon>
+              <v-list-item-subtitle>{{output.currently.precipProbability * 100}}%</v-list-item-subtitle>
             </v-list-item>
 
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-cloud-download</v-icon>
-              </v-list-item-icon>
-              <v-list-item-subtitle>48%</v-list-item-subtitle>
-            </v-list-item>
+            <!-- <v-list-item>
+             
+            </v-list-item> -->
 
             <v-divider></v-divider>
           </v-card>
@@ -127,6 +128,7 @@ export default {
       sentiment: null,
       whitelist: null,
       blacklist: null,
+      output: null
   }),
   methods: {
     getArticles: function (threshold, whitelist, blacklist) {
@@ -147,6 +149,9 @@ export default {
   },
   mounted () {
     this.getArticles(null, null, null);
+    axios
+      .get('https://api.darksky.net/forecast/5871dcff4e6467cfe993c8b6c5bcf9f6/42.3868,-72.5301') 
+      .then(response => (this.output = response.data))
   }
 };
 </script>
