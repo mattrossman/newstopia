@@ -3,22 +3,11 @@
    <v-container fluid>
      <h4>Top News</h4>
        <v-row>
-        <v-col cols="8">
+        <v-col cols="12" sm="8">
           <v-card>
             <v-card-text>
               <v-list three-line>
                 <template v-for="article in articles">
-                  <!-- <v-subheader
-                    v-if="item.header"
-                    :key="item.header"
-                    v-text="item.header"
-                  ></v-subheader>
-
-                  <v-divider
-                    v-else-if="item.divider"
-                    :key="index"
-                    :inset="item.inset"
-                  ></v-divider> -->
 
                   <v-list-item
                     :key="article.title"
@@ -57,7 +46,7 @@
           </v-card>
         </v-col>
 
-        <v-col cols="4">
+        <v-col cols="12" sm="4">
 
           <v-card>
             <v-card-title>News Sentiment</v-card-title>
