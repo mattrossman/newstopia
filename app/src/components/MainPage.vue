@@ -97,10 +97,6 @@
             </v-list-item>
 
             <v-divider></v-divider>
-
-            <v-card-actions>
-              <v-btn text>Full Report</v-btn>
-            </v-card-actions>
           </v-card>
 
         </v-col>
@@ -135,7 +131,7 @@ export default {
   methods: {
     getArticles: function (threshold, whitelist, blacklist) {
       axios
-        .post('http://127.0.0.1:5000/articles', {
+        .post('https://ugly-frog-85.localtunnel.me/articles', {
           threshold: threshold,
           whitelist: whitelist,
           blacklist: blacklist

@@ -2,12 +2,12 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
+      color="light purple"
       dark
     >
       <div class="d-flex align-center">
 
-        <h1>Posty</h1>
+        <h1>Newstopia</h1>
       </div>
 
       <v-spacer></v-spacer>
