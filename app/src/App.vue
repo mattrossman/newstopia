@@ -1,3 +1,4 @@
+
 <template>
   <v-app>
     <v-app-bar
@@ -24,7 +25,8 @@
 import MainPage from "./components/MainPage";
 
 export default {
-  name: 'App',
+  name: 'Newstopia',
+  title: 'Newstopia',
 
   components: {
     MainPage,

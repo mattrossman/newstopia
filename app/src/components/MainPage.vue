@@ -131,7 +131,7 @@ export default {
   methods: {
     getArticles: function (threshold, whitelist, blacklist) {
       axios
-        .post('https://ugly-frog-85.localtunnel.me/articles', {
+        .post('https://orange-rattlesnake-51.localtunnel.me/articles', {
           threshold: threshold,
           whitelist: whitelist,
           blacklist: blacklist
