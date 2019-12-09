@@ -36,6 +36,9 @@
                         {{ article.description }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
+                    <v-list-item-icon>
+                      <p>{{ Math.round((article.sentiment * 100)) }}%</p>
+                    </v-list-item-icon>
                   </v-list-item>
                 </template>
               </v-list>
