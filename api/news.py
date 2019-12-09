@@ -40,7 +40,8 @@ def fetch_top_articles() -> List[ArticleInfo]:
 
 
 def make_keyword_query(whitelist: Set[str], blacklist: Set[str]) -> str:
-    return f'{" ".join(whitelist)} {" ".join("-" + token for token in blacklist)}'
+    q = f'{" ".join(whitelist)} {" ".join("-" + token for token in blacklist)}'
+    return q
 
 
 def fetch_keyword_articles(whitelist: Set[str], blacklist: Set[str]) -> List[ArticleInfo]:
@@ -66,6 +67,16 @@ def fetch_filtered_articles(threshold: float, whitelist: Set[str], blacklist: Se
     List[ArticleInfo]
         Latest articles matching the filter settings
     """
+    print(threshold,  whitelist, blacklist)
+
+    # Null payload handling
+    defaults = {'technology', 'business', 'art', 'science', 'politics'}
+    threshold = 0 if not threshold else threshold
+    whitelist = defaults if not whitelist else whitelist
+    blacklist = set() if not blacklist else blacklist
+
+    print('AFTER', threshold,  whitelist, blacklist)
+
     articles = fetch_keyword_articles(whitelist, blacklist)
     # Do one more blacklisting pass (News API seems to let some slip through)
     articles = [article for article in articles if not blacklist_check_article(article, blacklist)]
