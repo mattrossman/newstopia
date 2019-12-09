@@ -150,7 +150,7 @@ export default {
     }
   },
   mounted () {
-    this.getArticles(0, ['president'], ['trump']);
+    this.getArticles(null, null, null);
   }
 };
 </script>
