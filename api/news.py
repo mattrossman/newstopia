@@ -28,6 +28,10 @@ class ArticleInfo(TypedDict):
     content: str
 
 
+class SentimentArticleInfo(ArticleInfo):
+    sentiment: float
+
+
 class ResponseInfo(TypedDict):
     status: str
     totalResults: int
@@ -50,7 +54,7 @@ def fetch_keyword_articles(whitelist: Set[str], blacklist: Set[str]) -> List[Art
     return response['articles']
 
 
-def fetch_filtered_articles(threshold: float, whitelist: Set[str], blacklist: Set[str]) -> List[ArticleInfo]:
+def fetch_filtered_articles(threshold: float, whitelist: Set[str], blacklist: Set[str]) -> List[SentimentArticleInfo]:
     """Fetch the latest articles, filtered by sentiment and topics
 
     Parameters
@@ -83,7 +87,7 @@ def fetch_filtered_articles(threshold: float, whitelist: Set[str], blacklist: Se
     return sentiment_filter_articles(articles, threshold)
 
 
-def sentiment_filter_articles(articles: List[ArticleInfo], threshold: float) -> List[ArticleInfo]:
+def sentiment_filter_articles(articles: List[ArticleInfo], threshold: float) -> List[SentimentArticleInfo]:
     """Only keep the articles that exceed the given sentiment threshold
 
     Parameters
@@ -101,7 +105,10 @@ def sentiment_filter_articles(articles: List[ArticleInfo], threshold: float) -> 
     valid_articles = [article for article in articles if article['description'] is not None]
     descriptions = [article['description'] for article in valid_articles]
     sentiments = indicoio.sentiment(descriptions)
-    return [article for article, sentiment in zip(valid_articles, sentiments) if sentiment > threshold]
+    # Turn it into a SentimentArticleInfo
+    for article, sentiment in zip(valid_articles, sentiments):
+        article['sentiment'] = sentiment
+    return [article for article in valid_articles if article['sentiment'] > threshold]
 
 
 def blacklist_check_article(article: ArticleInfo, blacklist: Set[str]) -> bool:
