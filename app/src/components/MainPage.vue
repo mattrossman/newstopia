@@ -22,6 +22,8 @@
 
                   <v-list-item
                     :key="article.title"
+                    :href="article.url"
+                    target="_blank"
                   >
                     <v-list-item-avatar>
                       <v-img :src="article.urlToImage"></v-img>
