@@ -29,7 +29,10 @@
 
                     <v-list-item-content>
                       <v-list-item-title v-html="article.title"></v-list-item-title>
-                      <v-list-item-subtitle v-html="article.source.name"></v-list-item-subtitle>
+                      <v-list-item-subtitle>
+                        <span class='text--primary'>{{ article.source.name }}</span> &mdash;
+                        {{ article.description }}
+                      </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </template>
