@@ -1,5 +1,28 @@
+
 <template>
+
   <v-card>
+    <div id="app">
+  <v-app id="inspire">
+    <v-parallax
+      height="600"
+      align = "center"
+      src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
+    >
+
+      <v-row
+        align="center"
+        justify="center"
+      >
+        <v-col class="text-center" cols="12">
+          <h1 class="display-4 font-weight-thick mb-2">Newstopia</h1>
+          <h4 class="subheading mb-3">A News App that cares about your mental health!</h4>
+          <h5 class="subheading font-weight-thin mb-2">Made with &hearts; by Ali, Ayush, Matt, and Wesley</h5>
+        </v-col>
+      </v-row>
+    </v-parallax>
+  </v-app>
+</div>
    <v-container fluid>
      <h4>Top News</h4>
        <v-row>
@@ -98,9 +121,10 @@
                 </v-col>
                 <v-col cols="6">
                   <v-img
-                    src="https://cdn.vuetifyjs.com/images/cards/sun.png"
+                    src="https://i.ibb.co/xFzFCwf/rainy-pngrepo-com.png" 
                     alt="Sunny image"
                     width="92"
+                    align="right"
                   ></v-img>
                 </v-col>
               </v-row>
