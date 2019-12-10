@@ -82,7 +82,7 @@
               ></v-slider>
               <v-combobox multiple
                         v-model="whitelist" 
-                        label="Whitelist" 
+                        label="I want to hear about" 
                         append-icon
                         chips
                         deletable-chips
@@ -93,7 +93,7 @@
               </v-combobox>
               <v-combobox multiple
                         v-model="blacklist" 
-                        label="Blacklist" 
+                        label="I don't want to hear about" 
                         append-icon
                         chips
                         deletable-chips
@@ -186,7 +186,7 @@ export default {
   methods: {
     getArticles: function (threshold, whitelist, blacklist) {
       axios
-        .post('https://orange-rattlesnake-51.localtunnel.me/articles', {
+        .post('https://127.0.0.1:5000/articles', {
           threshold: threshold,
           whitelist: whitelist,
           blacklist: blacklist
