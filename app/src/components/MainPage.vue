@@ -5,7 +5,7 @@
     <div id="app">
   <v-app id="inspire">
     <v-parallax
-      height="700"
+      height="800"
       align = "center"
       src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
     >
@@ -142,7 +142,7 @@
                <v-list-item-icon>
                 <v-icon>mdi-weather-pouring</v-icon>
               </v-list-item-icon>
-              <v-list-item-subtitle>{{output.currently.precipProbability * 100}}%</v-list-item-subtitle>
+              <v-list-item-subtitle>{{" "+ output.currently.precipProbability * 100}}%</v-list-item-subtitle>
             </v-list-item>
             <v-divider></v-divider>
           </v-card>
@@ -175,7 +175,7 @@ export default {
   methods: {
     getArticles: function (threshold, whitelist, blacklist) {
       axios
-        .post('https://127.0.0.1:5000/articles', {
+        .post('https://breezy-robin-52.localtunnel.me/articles', {
           threshold: threshold,
           whitelist: whitelist,
           blacklist: blacklist
