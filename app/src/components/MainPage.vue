@@ -5,7 +5,7 @@
     <div id="app">
   <v-app id="inspire">
     <v-parallax
-      height="600"
+      height="700"
       align = "center"
       src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
     >
@@ -14,8 +14,10 @@
         align="center"
         justify="center"
       >
+    
         <v-col class="text-center" cols="12">
           <h1 class="display-4 font-weight-thick mb-2">Newstopia</h1>
+          
           <h4 class="subheading mb-3">A News App that cares about your mental health!</h4>
           <h5 class="subheading font-weight-thin mb-2">Made with &hearts; by Ali, Ayush, Matt, and Wesley</h5>
         </v-col>
@@ -76,9 +78,11 @@
             <v-card-text>
               <v-slider
                 v-model="sentiment"
+                thumb-label
+                :thumb-size="20"
                 append-icon="mdi-emoticon-outline"
                 prepend-icon="mdi-emoticon-neutral-outline"
-                min=0 max=1 step=0.1
+                min=0 max=100 step=10
               ></v-slider>
               <v-combobox multiple
                         v-model="whitelist" 
@@ -122,7 +126,7 @@
                 <v-col cols="6">
                   <v-img
                     src="https://i.ibb.co/xFzFCwf/rainy-pngrepo-com.png" 
-                    alt="Sunny image"
+                    alt="Rainy image"
                     width="92"
                     align="right"
                   ></v-img>
@@ -140,11 +144,6 @@
               </v-list-item-icon>
               <v-list-item-subtitle>{{output.currently.precipProbability * 100}}%</v-list-item-subtitle>
             </v-list-item>
-
-            <!-- <v-list-item>
-             
-            </v-list-item> -->
-
             <v-divider></v-divider>
           </v-card>
 
@@ -154,16 +153,6 @@
   </v-card>
 </template>
 <style scoped>
-/* ul {
-  list-style-type: none;
-}
-img.thumb {
-  width: 100px;
-}
-div.details {
-  float: right;
-  width: auto;
-} */
 </style>
 <script>
 import axios from 'axios'
@@ -194,7 +183,7 @@ export default {
         .then(response => (this.articles = response.data.articles))
     },
     updateHandler: function(event) {
-      this.getArticles(this.sentiment, this.whitelist, this.blacklist);
+      this.getArticles(this.sentiment/100, this.whitelist, this.blacklist);
       window.console.log(`Button clicked: ${event.target.name}`)
       window.console.log(`Sentiment value: ${this.sentiment}`)
       window.console.log(`Whitelist: ${this.whitelist}`)
@@ -217,7 +206,6 @@ export default {
         b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
     };
     return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
-    // or output as hex if preferred
 }
   },
   mounted () {

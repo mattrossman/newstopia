@@ -3,7 +3,7 @@
   <v-app>
     <v-app-bar
       app
-      color="success"
+      color="pink"
       dark
        collapse-on-scroll
       scroll-target="#scrolling-techniques-2"
@@ -21,7 +21,8 @@
         </v-btn>
   
         <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
+          <v-icon> mdi-account-heart</v-icon>
+          <!-- mdi-heart -->
         </v-btn>
 
     </v-app-bar>
