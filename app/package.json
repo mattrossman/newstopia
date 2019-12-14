@@ -12,6 +12,7 @@
     "axios": "^0.19.0",
     "core-js": "^3.3.2",
     "vue": "^2.6.10",
+    "vue-skycon": "^1.0.4",
     "vuetify": "^2.1.0"
   },
   "devDependencies": {
