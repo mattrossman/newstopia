@@ -5,7 +5,7 @@
     <div id="app">
   <v-app id="inspire">
     <v-parallax
-      height="800"
+      height="900"
       align = "center"
       src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
     >
@@ -72,8 +72,7 @@
         </v-col>
 
         <v-col cols="12" sm="4">
-
-          <v-card>
+          <v-card class="mb-4">
             <v-card-title>News Sentiment</v-card-title>
             <v-card-text>
               <v-slider
@@ -130,11 +129,11 @@
             </v-card-text>
 
             <v-list-item>
-              <v-list-item-icon>
+              <v-list-item-icon class="mr-2">
                 <v-icon>mdi-weather-windy</v-icon>
               </v-list-item-icon>
               <v-list-item-subtitle>{{Math.round(output.currently.windSpeed)}} mph</v-list-item-subtitle>
-               <v-list-item-icon>
+               <v-list-item-icon class="mr-2">
                 <v-icon>mdi-weather-pouring</v-icon>
               </v-list-item-icon>
               <v-list-item-subtitle>{{" "+ output.currently.precipProbability * 100}}%</v-list-item-subtitle>
