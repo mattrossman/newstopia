@@ -1,0 +1,16 @@
+version: '3'
+services:
+  newstopia-api:
+    build: ./api
+    volumes:
+      - ./api:/usr/src/app
+    ports:
+      - 5001:80
+  newstopia-website:
+    build: ./app
+    volumes:
+      - ./app:/app
+    ports:
+      - 5000:8080
+    depends_on: 
+      - newstopia-api
