@@ -4,7 +4,6 @@
   <v-card>
     <div id="app">
   <v-app id="inspire">
-    <p>Lenght: {{ this.dummy.length }}</p>
     <v-parallax
       height="800"
       align = "center"
@@ -171,8 +170,7 @@ export default {
         { pct: 0.5, color: { r: 0xff, g: 0xfe, b: 0xd1 } },
         { pct: 1.0, color: { r: 0x94, g: 0xd4, b: 0xa5 } }
       ],
-      output: null,
-      dummy: null
+      output: null
   }),
   methods: {
     getArticles: function (threshold, whitelist, blacklist) {
@@ -217,9 +215,6 @@ export default {
     axios
       .get(proxy + weatherUrl)
       .then(response => (this.output = response.data))
-    axios
-      .get('https://dummy.restapiexample.com/api/v1/employees')
-      .then(response => this.dummy = response.data)
   }
 };
 </script>
