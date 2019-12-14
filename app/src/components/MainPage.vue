@@ -175,7 +175,7 @@ export default {
   methods: {
     getArticles: function (threshold, whitelist, blacklist) {
       axios
-        .post('https://breezy-robin-52.localtunnel.me/articles', {
+        .post('http://localhost:5001/articles', {
           threshold: threshold,
           whitelist: whitelist,
           blacklist: blacklist
