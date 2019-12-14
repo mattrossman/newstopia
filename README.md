@@ -15,8 +15,8 @@ This makes readers less vulnerable to emotional-manipulation tactics, or simply 
 
 ## Topic Requirements
 
-- Ajax - for interfacing with the news and sentiment APIs
-- Mobile - since most news consumption is on mobile devices
+- Server-side: The article fetching, sentiment analysis, and filtering occurs on a Python backend
+- Ajax: We make Ajax request through [axios](https://www.npmjs.com/package/axios) to our Python backend and the weather API
 
 
 ![Screenshot](assets/screenshot.png)
