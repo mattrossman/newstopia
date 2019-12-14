@@ -18,6 +18,9 @@ This makes readers less vulnerable to emotional-manipulation tactics, or simply 
 - Ajax - for interfacing with the news and sentiment APIs
 - Mobile - since most news consumption is on mobile devices
 
+
+![Screenshot](assets/screenshot.png)
+
 ## Running
 
 The frontend and backend can be run with Docker Compose.

@@ -25,7 +25,7 @@
     </v-parallax>
   </v-app>
 </div>
-   <v-container fluid>
+   <v-container>
      <h4>Top News</h4>
        <v-row>
         <v-col cols="12" sm="8">
