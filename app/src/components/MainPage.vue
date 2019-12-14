@@ -124,12 +124,7 @@
                   {{Math.round(output.currently.temperature)}}&deg;F
                 </v-col>
                 <v-col cols="6">
-                  <v-img
-                    src="https://i.ibb.co/xFzFCwf/rainy-pngrepo-com.png" 
-                    alt="Rainy image"
-                    width="92"
-                    align="right"
-                  ></v-img>
+                  <skycon :condition="output.currently.icon" width="90" height="90" color="gray"></skycon>
                 </v-col>
               </v-row>
             </v-card-text>
