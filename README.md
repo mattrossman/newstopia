@@ -20,7 +20,21 @@ This makes readers less vulnerable to emotional-manipulation tactics, or simply 
 
 ## Running
 
-The frontend and backend can be run with Docker Compose. First, set up your API keys in the config.yaml file as specified in the [API's README](api/README.md). Then start the api and website services with:
+The frontend and backend can be run with Docker Compose.
+
+#### API Keys
+
+You must add a `config.yaml` in the `api` directory containing your API keys for News API and Indico.
+
+Example:
+
+```yaml
+keys:
+  indico: abc123
+  newsapi: xyz789
+```
+
+Then start the api and website services with:
 
     docker-compose up
 
