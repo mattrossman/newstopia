@@ -210,5 +210,6 @@ export default {
       .get(proxy + weatherUrl)
       .then(response => (this.output = response.data))
   }
+  //working weather update
 };
 </script>
